@@ -1,0 +1,340 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS Custom Properties ────────────────────────────────────────────────── */
+:root {
+  --bg-primary: #0d1117;
+  --bg-surface: #161b22;
+  --bg-card: #1c2128;
+  --border-default: #30363d;
+  --border-muted: #21262d;
+  --text-primary: #f0f6fc;
+  --text-secondary: #c9d1d9;
+  --text-muted: #8b949e;
+  --brand-blue: #3b82f6;
+  --yes-green: #3fb950;
+  --no-red: #f85149;
+  --scrollbar-track: #161b22;
+  --scrollbar-thumb: #30363d;
+  --scrollbar-thumb-hover: #484f58;
+}
+
+/* ── Base Reset ───────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-secondary);
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Custom Scrollbar ─────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* ── Selection ────────────────────────────────────────────────────────────── */
+::selection {
+  background-color: rgba(59, 130, 246, 0.3);
+  color: #f0f6fc;
+}
+
+/* ── Typography ───────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+a {
+  color: var(--brand-blue);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #60a5fa;
+}
+
+code, kbd, samp, pre {
+  font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+}
+
+/* ── Glassmorphism Components ─────────────────────────────────────────────── */
+@layer components {
+  .glass {
+    background: rgba(28, 33, 40, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(48, 54, 61, 0.6);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .glass-dark {
+    background: rgba(13, 17, 23, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(48, 54, 61, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  }
+
+  .glass-card {
+    @apply glass rounded-2xl transition-all duration-200;
+  }
+
+  .glass-card:hover {
+    background: rgba(33, 38, 45, 0.75);
+    border-color: rgba(48, 54, 61, 0.8);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transform: translateY(-1px);
+  }
+
+  /* ── Buttons ── */
+  .btn-primary {
+    @apply rounded-xl bg-brand-500 px-4 py-2.5 text-sm font-semibold text-white transition-all duration-200;
+    @apply hover:bg-brand-400 active:scale-95;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(59, 130, 246, 0.2);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4), 0 0 0 1px rgba(59, 130, 246, 0.3);
+  }
+
+  .btn-secondary {
+    @apply rounded-xl border border-dark-border bg-dark-hover px-4 py-2.5 text-sm font-semibold text-dark-text transition-all duration-200;
+    @apply hover:border-dark-muted hover:bg-dark-card hover:text-dark-heading active:scale-95;
+  }
+
+  .btn-yes {
+    @apply rounded-xl bg-yes px-4 py-2.5 text-sm font-bold text-white transition-all duration-200;
+    @apply hover:bg-yes-dark active:scale-95;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(63, 185, 80, 0.2);
+  }
+
+  .btn-yes:hover {
+    box-shadow: 0 4px 12px rgba(63, 185, 80, 0.35), 0 0 0 1px rgba(63, 185, 80, 0.3);
+  }
+
+  .btn-no {
+    @apply rounded-xl bg-no px-4 py-2.5 text-sm font-bold text-white transition-all duration-200;
+    @apply hover:bg-no-dark active:scale-95;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(248, 81, 73, 0.2);
+  }
+
+  .btn-no:hover {
+    box-shadow: 0 4px 12px rgba(248, 81, 73, 0.35), 0 0 0 1px rgba(248, 81, 73, 0.3);
+  }
+
+  /* ── Inputs ── */
+  .input-dark {
+    @apply w-full rounded-xl border border-dark-border bg-dark-bg px-3 py-2.5 text-sm text-dark-heading placeholder-dark-muted outline-none transition-all duration-200;
+    @apply focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20;
+  }
+
+  /* ── Badges ── */
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+
+  .badge-yes {
+    @apply badge bg-yes-muted text-yes;
+  }
+
+  .badge-no {
+    @apply badge bg-no-muted text-no;
+  }
+
+  .badge-neutral {
+    @apply badge bg-dark-hover text-dark-muted;
+  }
+
+  /* ── Market Card ── */
+  .market-card {
+    @apply glass-card cursor-pointer p-5;
+  }
+
+  /* ── Price Bar ── */
+  .price-bar {
+    @apply relative h-2 overflow-hidden rounded-full bg-dark-border;
+  }
+
+  .price-bar-yes {
+    @apply h-full rounded-full bg-gradient-to-r from-yes-dark to-yes transition-all duration-500;
+  }
+
+  /* ── Stat card ── */
+  .stat-card {
+    @apply glass rounded-xl p-4;
+  }
+
+  /* ── Shimmer skeleton ── */
+  .skeleton {
+    @apply animate-pulse rounded-lg bg-dark-hover;
+    background: linear-gradient(
+      90deg,
+      #1c2128 25%,
+      #21262d 50%,
+      #1c2128 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.8s ease-in-out infinite;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    @apply h-px w-full bg-dark-border;
+  }
+
+  /* ── Scrollable container ── */
+  .scroll-container {
+    @apply overflow-y-auto overflow-x-hidden;
+    scrollbar-gutter: stable;
+  }
+}
+
+/* ── Utility Animations ───────────────────────────────────────────────────── */
+@layer utilities {
+  .animate-in {
+    animation: fadeUp 0.4s ease-out both;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, #60a5fa 0%, #a371f7 50%, #3fb950 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-brand {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glow effects */
+  .glow-blue  { box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
+  .glow-green { box-shadow: 0 0 20px rgba(63, 185, 80, 0.4); }
+  .glow-red   { box-shadow: 0 0 20px rgba(248, 81, 73, 0.4); }
+
+  /* Focus ring */
+  .focus-ring {
+    @apply outline-none ring-2 ring-brand-500/50 ring-offset-2 ring-offset-dark-bg;
+  }
+
+  /* No scrollbar */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
+
+/* ── RainbowKit overrides ─────────────────────────────────────────────────── */
+[data-rk] {
+  --rk-colors-accentColor: #3b82f6;
+  --rk-colors-accentColorForeground: #ffffff;
+  --rk-colors-modalBackground: #161b22;
+  --rk-colors-modalBorder: #30363d;
+  --rk-colors-modalText: #c9d1d9;
+  --rk-colors-modalTextSecondary: #8b949e;
+  --rk-radii-modal: 16px;
+}
+
+/* ── Recharts Dark Theme ──────────────────────────────────────────────────── */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: #21262d;
+}
+
+.recharts-text {
+  fill: #8b949e;
+  font-size: 11px;
+}
+
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: #1c2128 !important;
+  border: 1px solid #30363d !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+.recharts-default-tooltip .recharts-tooltip-label {
+  color: #c9d1d9 !important;
+  font-weight: 600 !important;
+  margin-bottom: 4px !important;
+}
+
+.recharts-default-tooltip .recharts-tooltip-item {
+  color: #8b949e !important;
+}
+
+/* ── Number input arrow removal ───────────────────────────────────────────── */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* ── Focus visible ────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--brand-blue);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Loading spinner ──────────────────────────────────────────────────────── */
+.spinner {
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--brand-blue);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
