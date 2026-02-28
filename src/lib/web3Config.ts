@@ -4,9 +4,13 @@ import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 
 // ── Environment ───────────────────────────────────────────────────────────────
 
-const walletConnectProjectId = process.env['NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID'];
+const walletConnectProjectId =
+  process.env['NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID'] ?? 'placeholder_project_id';
 
-if (!walletConnectProjectId || walletConnectProjectId === 'your_walletconnect_project_id_here') {
+if (
+  !process.env['NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID'] ||
+  process.env['NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID'] === 'your_walletconnect_project_id_here'
+) {
   console.warn(
     '[web3Config] NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID is not set. ' +
       'WalletConnect features will not work. Get a project ID at https://cloud.walletconnect.com'

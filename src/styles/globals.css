@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Import fonts ─────────────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-
 /* ── CSS Custom Properties ────────────────────────────────────────────────── */
 :root {
   --bg-primary: #0d1117;

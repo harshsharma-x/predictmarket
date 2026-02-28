@@ -1,14 +1,9 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
 import { Providers } from './providers';
+import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
 import '@/styles/globals.css';
 import { APP_NAME, APP_DESCRIPTION, APP_URL } from '@/lib/constants';
-
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-});
 
 export const metadata: Metadata = {
   title: {
@@ -82,15 +77,13 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" className={`dark ${inter.variable}`} suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      </head>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body className="min-h-screen bg-dark-bg font-sans text-dark-text antialiased">
         <Providers>
           <div className="flex min-h-screen flex-col">
+            <Header />
             <main className="flex-1">{children}</main>
+            <Footer />
           </div>
         </Providers>
       </body>
