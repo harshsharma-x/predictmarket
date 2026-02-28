@@ -4,8 +4,14 @@ import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 
 // ── Environment ───────────────────────────────────────────────────────────────
 
-const walletConnectProjectId =
-  process.env['NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID'] ?? 'YOUR_PROJECT_ID';
+const walletConnectProjectId = process.env['NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID'];
+
+if (!walletConnectProjectId || walletConnectProjectId === 'your_walletconnect_project_id_here') {
+  console.warn(
+    '[web3Config] NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID is not set. ' +
+      'WalletConnect features will not work. Get a project ID at https://cloud.walletconnect.com'
+  );
+}
 
 const polygonRpcUrl =
   process.env['NEXT_PUBLIC_POLYGON_RPC_URL'] ?? 'https://polygon-rpc.com';
@@ -23,7 +29,7 @@ export type SupportedChain = (typeof SUPPORTED_CHAINS)[number];
 
 export const wagmiConfig = getDefaultConfig({
   appName: 'PredictMarket',
-  projectId: walletConnectProjectId,
+  projectId: walletConnectProjectId ?? '',
   chains: SUPPORTED_CHAINS,
   transports: {
     [polygon.id]: http(polygonRpcUrl),

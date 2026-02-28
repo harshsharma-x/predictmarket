@@ -28,7 +28,8 @@ function market(
   tags: string[],
   resolutionSource: string,
   status: MarketStatus = 'active',
-  featured = false
+  featured = false,
+  resolution: 'yes' | 'no' | null = null
 ): Market {
   const noPrice = parseFloat((1 - yesPrice).toFixed(4));
   return {
@@ -43,7 +44,7 @@ function market(
     endDate: endDays >= 0 ? daysFromNow(endDays) : daysAgo(Math.abs(endDays)),
     createdAt: daysAgo(createdDaysAgo),
     status,
-    resolution: null,
+    resolution,
     resolutionSource,
     tags,
     priceHistory: generatePriceHistory(yesPrice, Math.max(createdDaysAgo, 14)),
@@ -101,7 +102,8 @@ export const MOCK_MARKETS: Market[] = [
     ['india', 'election', 'modi', 'bjp'],
     'Election Commission of India (eci.gov.in)',
     'resolved',
-    true
+    true,
+    'yes'
   ),
 
   market(
