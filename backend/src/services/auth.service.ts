@@ -59,11 +59,12 @@ export async function verifySignature(message: string, signature: string): Promi
     const newNonce = generateNonce();
     await prisma.user.update({ where: { id: user.id }, data: { nonce: newNonce } });
     
-    const token = jwt.sign(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const token = (jwt.sign as any)(
       { id: user.id, walletAddress: user.walletAddress },
       config.JWT_SECRET,
       { expiresIn: config.JWT_EXPIRES_IN }
-    );
+    ) as string;
     
     return token;
   } catch (error) {

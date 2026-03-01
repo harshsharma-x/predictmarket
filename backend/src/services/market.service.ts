@@ -159,7 +159,7 @@ export async function updateMarket(id: string, data: UpdateMarketInput) {
       ...(data.imageUrl !== undefined && { imageUrl: data.imageUrl }),
       ...(data.resolutionSource !== undefined && { resolutionSource: data.resolutionSource }),
       ...(data.resolutionDate && { resolutionDate: new Date(data.resolutionDate) }),
-      ...(data.status && { status: data.status as Prisma.EnumMarketStatusFilter }),
+      ...(data.status && { status: data.status as 'ACTIVE' | 'PAUSED' | 'CANCELLED' }),
       ...(data.featured !== undefined && { featured: data.featured }),
     },
     include: { outcomes: true },

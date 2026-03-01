@@ -69,6 +69,7 @@ model Market {
   trades       Trade[]
   comments     Comment[]
   priceHistory PriceHistory[]
+  positions    Position[]
 }
 
 model Outcome {
