@@ -33,5 +33,5 @@
     "noPropertyAccessFromIndexSignature": false
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "hardhat.config.ts", "scripts/", "contracts/", "test/"]
+  "exclude": ["node_modules", "backend/", "hardhat.config.ts", "scripts/", "contracts/", "test/"]
 }

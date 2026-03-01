@@ -1,0 +1,181 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MarketStatus {
+  ACTIVE
+  PAUSED
+  RESOLVED
+  CANCELLED
+}
+
+enum OrderSide {
+  BUY
+  SELL
+}
+
+enum OrderType {
+  MARKET
+  LIMIT
+}
+
+enum OrderStatus {
+  OPEN
+  FILLED
+  PARTIALLY_FILLED
+  CANCELLED
+}
+
+model User {
+  id            String   @id @default(cuid())
+  walletAddress String   @unique
+  username      String?  @unique
+  avatar        String?
+  nonce         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  positions   Position[]
+  buyTrades   Trade[]    @relation("BuyerTrades")
+  sellTrades  Trade[]    @relation("SellerTrades")
+  orders      Order[]
+  comments    Comment[]
+  leaderboard Leaderboard?
+}
+
+model Market {
+  id               String       @id @default(cuid())
+  question         String
+  description      String
+  category         String
+  imageUrl         String?
+  resolutionSource String?
+  resolutionDate   DateTime
+  resolvedAt       DateTime?
+  outcome          String?
+  status           MarketStatus @default(ACTIVE)
+  contractAddress  String?
+  featured         Boolean      @default(false)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  outcomes     Outcome[]
+  orders       Order[]
+  trades       Trade[]
+  comments     Comment[]
+  priceHistory PriceHistory[]
+  positions    Position[]
+}
+
+model Outcome {
+  id           String  @id @default(cuid())
+  marketId     String
+  label        String
+  price        Float   @default(0.5)
+  totalShares  Float   @default(0)
+  totalVolume  Float   @default(0)
+
+  market       Market         @relation(fields: [marketId], references: [id], onDelete: Cascade)
+  orders       Order[]
+  positions    Position[]
+  trades       Trade[]
+  priceHistory PriceHistory[]
+}
+
+model Order {
+  id        String      @id @default(cuid())
+  userId    String
+  marketId  String
+  outcomeId String
+  side      OrderSide
+  type      OrderType
+  price     Float
+  amount    Float
+  filled    Float       @default(0)
+  remaining Float
+  status    OrderStatus @default(OPEN)
+  txHash    String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id])
+  market  Market  @relation(fields: [marketId], references: [id])
+  outcome Outcome @relation(fields: [outcomeId], references: [id])
+}
+
+model Trade {
+  id        String   @id @default(cuid())
+  marketId  String
+  outcomeId String
+  buyerId   String
+  sellerId  String
+  price     Float
+  amount    Float
+  txHash    String?
+  createdAt DateTime @default(now())
+
+  market  Market  @relation(fields: [marketId], references: [id])
+  outcome Outcome @relation(fields: [outcomeId], references: [id])
+  buyer   User    @relation("BuyerTrades", fields: [buyerId], references: [id])
+  seller  User    @relation("SellerTrades", fields: [sellerId], references: [id])
+}
+
+model Position {
+  id           String   @id @default(cuid())
+  userId       String
+  marketId     String
+  outcomeId    String
+  shares       Float
+  avgPrice     Float
+  currentValue Float
+  pnl          Float
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id])
+  market  Market  @relation(fields: [marketId], references: [id], onDelete: Cascade)
+  outcome Outcome @relation(fields: [outcomeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, marketId, outcomeId])
+}
+
+model PriceHistory {
+  id        String   @id @default(cuid())
+  marketId  String
+  outcomeId String
+  price     Float
+  timestamp DateTime @default(now())
+
+  market  Market  @relation(fields: [marketId], references: [id])
+  outcome Outcome @relation(fields: [outcomeId], references: [id])
+
+  @@index([marketId, outcomeId, timestamp])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  userId    String
+  marketId  String
+  content   String
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  market Market @relation(fields: [marketId], references: [id])
+}
+
+model Leaderboard {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  totalPnl     Float    @default(0)
+  totalTrades  Int      @default(0)
+  winRate      Float    @default(0)
+  rank         Int      @default(0)
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
