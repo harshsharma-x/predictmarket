@@ -174,9 +174,8 @@ Query parameter: `?walletAddress=0x...`
 #### POST `/auth/verify`
 ```json
 {
-  "walletAddress": "0x...",
-  "signature": "0x...",
-  "nonce": "abc123"
+  "message": "<EIP-4361 SIWE message string>",
+  "signature": "0x..."
 }
 ```
 Returns:

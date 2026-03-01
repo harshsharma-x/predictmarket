@@ -4,6 +4,7 @@ import { paginate, formatPaginatedResponse } from '../utils/helpers';
 import { CreateOrderInput } from '../validators/order.validator';
 import { matchOrder } from './matching.service';
 import { Prisma } from '@prisma/client';
+import { logger } from '../utils/logger';
 
 export async function createOrder(userId: string, data: CreateOrderInput) {
   const market = await prisma.market.findUnique({
@@ -37,7 +38,7 @@ export async function createOrder(userId: string, data: CreateOrderInput) {
 
   // Trigger matching engine asynchronously
   matchOrder(order).catch((err) => {
-    console.error('Matching engine error:', err);
+    logger.error({ err }, 'Matching engine error');
   });
 
   return order;

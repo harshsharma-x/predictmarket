@@ -52,12 +52,13 @@ export async function recalculateLeaderboard(): Promise<void> {
 
   rankings.sort((a, b) => b.totalPnl - a.totalPnl);
 
-  for (let i = 0; i < rankings.length; i++) {
-    const r = rankings[i];
-    await prisma.leaderboard.upsert({
-      where: { userId: r.userId },
-      update: { totalPnl: r.totalPnl, totalTrades: r.totalTrades, winRate: r.winRate, rank: i + 1 },
-      create: { userId: r.userId, totalPnl: r.totalPnl, totalTrades: r.totalTrades, winRate: r.winRate, rank: i + 1 },
-    });
-  }
+  await prisma.$transaction(
+    rankings.map((r, i) =>
+      prisma.leaderboard.upsert({
+        where: { userId: r.userId },
+        update: { totalPnl: r.totalPnl, totalTrades: r.totalTrades, winRate: r.winRate, rank: i + 1 },
+        create: { userId: r.userId, totalPnl: r.totalPnl, totalTrades: r.totalTrades, winRate: r.winRate, rank: i + 1 },
+      })
+    )
+  );
 }

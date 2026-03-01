@@ -121,7 +121,14 @@ export async function executeTrade(
 
     // Emit trade event
     try {
-      emitNewTrade({ ...trade });
+      emitNewTrade({
+        id: trade.id,
+        marketId: trade.marketId,
+        outcomeId: trade.outcomeId,
+        price: trade.price,
+        amount: trade.amount,
+        createdAt: trade.createdAt,
+      });
     } catch (err) {
       logger.error({ err }, 'Failed to emit trade event');
     }
